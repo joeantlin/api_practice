@@ -2,40 +2,29 @@
 const Task = require("./models")
 
 module.exports = {
-    index:(req, res) => {
-        res.redirect('/tasks');
-    },
     alltasks:(req, res) => {
-        Task.find({}, (err, tasks) => {
-            if (err) res.json({message: "Query Error"});
-            res.json({data: tasks});
-        })
+        Task.find({})
+            .then(data => res.json({data: data}))
+            .catch(err => res.json({error: err}));
     },
     newtask:(req, res) => {
-        var task = new Task({title: req.params.tit, description: req.params.des});
-        task.save(err => {
-            if (err) res.json({message: "Query Error"});
-            res.redirect('/');
-        })
+        Task.create(req.body)
+            .then(data => res.json({data: data}))
+            .catch(err => res.json({error: err}));
     },
     findtask: (req, res) => {
-        Task.findOne({_id: req.params.id}, (err, task) => {
-            if (err) res.json({message: "Query Error"});
-            res.json({data: task});
-        })
+        Task.findById(req.params.id)
+            .then(data => res.json({data: data}))
+            .catch(err => res.json({error: err}));
     },
     updatetask: (req, res) => {
-        Task.findOneAndUpdate({_id: req.params.id}, {$set: {title: req.params.tit, description: req.params.des}}, function(err){
-            if (err) res.json({message: "Query Error"});
-            res.redirect('/');
-        })
+        Task.findByIdAndUpdate(req.params.id, req.body)
+            .then(data => res.json({data: data}))
+            .catch(err => res.json({error: err}));
     },
     deletetask: (req, res) => {
-        Task.deleteOne({_id: req.params.id}, err => {
-            if (err) res.json({message: "Query Error"});
-            res.redirect('/');
-        })
+        Task.findByIdAndRemove(req.params.id)
+            .then(data => res.json({data: data}))
+            .catch(err => res.json({error: err}));
     }
-    
-
 }

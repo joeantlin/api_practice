@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/basic_mongoose');
+mongoose.connect('mongodb://localhost/basic_mongoose', { useNewUrlParser: true});
 var Task = new mongoose.Schema({
     title: { 
         type: String, 
